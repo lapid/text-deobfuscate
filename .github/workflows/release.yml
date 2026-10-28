@@ -7,6 +7,7 @@ name: Release
 #   * Run it by hand (Actions tab, "Run workflow"): builds and publishes to TestPyPI, for a dry
 #     run. TestPyPI never accepts the same version twice, so bump the version first.
 #
+# The workflow file must be on the default branch to be run by hand.
 # Set up once: on pypi.org and on test.pypi.org add a trusted publisher for this repository,
 # workflow "release.yml", with the environment names "pypi" and "testpypi" respectively.
 on:
