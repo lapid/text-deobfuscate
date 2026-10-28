@@ -1,0 +1,1167 @@
+{
+  "levels": {
+    "aggressive": {
+      "by_trick": {
+        "partial accent-substitution": [
+          46,
+          60
+        ],
+        "partial atbash": [
+          26,
+          60
+        ],
+        "partial atbash in-context": [
+          18,
+          40
+        ],
+        "partial backslash-escape": [
+          60,
+          60
+        ],
+        "partial base32": [
+          40,
+          60
+        ],
+        "partial base32 in-context": [
+          37,
+          40
+        ],
+        "partial base64": [
+          58,
+          60
+        ],
+        "partial base64 in-context": [
+          38,
+          40
+        ],
+        "partial base64url": [
+          59,
+          60
+        ],
+        "partial binary": [
+          57,
+          60
+        ],
+        "partial caesar": [
+          39,
+          60
+        ],
+        "partial caesar in-context": [
+          23,
+          40
+        ],
+        "partial combining-marks": [
+          58,
+          60
+        ],
+        "partial decimal-codes": [
+          60,
+          60
+        ],
+        "partial emoji-word": [
+          34,
+          60
+        ],
+        "partial fullwidth": [
+          60,
+          60
+        ],
+        "partial hex": [
+          57,
+          60
+        ],
+        "partial hex in-context": [
+          40,
+          40
+        ],
+        "partial homoglyph": [
+          57,
+          60
+        ],
+        "partial html-entity": [
+          60,
+          60
+        ],
+        "partial leet-full": [
+          76,
+          100
+        ],
+        "partial leet-function-words": [
+          109,
+          120
+        ],
+        "partial leet-with-numbers": [
+          42,
+          42
+        ],
+        "partial leetspeak": [
+          55,
+          60
+        ],
+        "partial mime-word": [
+          60,
+          60
+        ],
+        "partial misspelling": [
+          30,
+          60
+        ],
+        "partial morse": [
+          56,
+          60
+        ],
+        "partial octal-escape": [
+          58,
+          60
+        ],
+        "partial quoted-printable": [
+          60,
+          60
+        ],
+        "partial repeated-chars": [
+          32,
+          60
+        ],
+        "partial reverse": [
+          21,
+          60
+        ],
+        "partial reverse in-context": [
+          1,
+          40
+        ],
+        "partial rot13": [
+          41,
+          60
+        ],
+        "partial rot13 in-context": [
+          28,
+          40
+        ],
+        "partial rot47": [
+          19,
+          60
+        ],
+        "partial rot47 in-context": [
+          6,
+          40
+        ],
+        "partial separator": [
+          48,
+          60
+        ],
+        "partial shorthand": [
+          23,
+          60
+        ],
+        "partial styled-alphabet": [
+          59,
+          60
+        ],
+        "partial url-percent": [
+          60,
+          60
+        ],
+        "partial word-reverse": [
+          6,
+          60
+        ],
+        "partial word-reverse in-context": [
+          7,
+          40
+        ],
+        "partial zero-width": [
+          60,
+          60
+        ],
+        "real html-entity": [
+          136,
+          136
+        ],
+        "real human-written": [
+          17,
+          25
+        ],
+        "stacked base64+base64": [
+          47,
+          50
+        ],
+        "stacked base64+hex": [
+          45,
+          50
+        ],
+        "stacked base64+homoglyph": [
+          50,
+          50
+        ],
+        "stacked base64+leetspeak": [
+          81,
+          90
+        ],
+        "stacked base64+reverse": [
+          46,
+          50
+        ],
+        "stacked base64+rot13+base64": [
+          35,
+          40
+        ],
+        "stacked hex+base64": [
+          47,
+          50
+        ],
+        "stacked hex+base64+reverse": [
+          35,
+          40
+        ],
+        "stacked homoglyph+accent-substitution": [
+          43,
+          50
+        ],
+        "stacked homoglyph+leetspeak": [
+          69,
+          90
+        ],
+        "stacked reverse+base64": [
+          57,
+          90
+        ],
+        "stacked rot13+base64": [
+          49,
+          50
+        ],
+        "stacked rot13+leetspeak": [
+          70,
+          90
+        ],
+        "stacked rot13+reverse+base64": [
+          39,
+          40
+        ],
+        "stacked styled-alphabet+leetspeak": [
+          43,
+          50
+        ],
+        "stacked url-percent+html-entity": [
+          50,
+          50
+        ],
+        "stacked url-percent+html-entity+base64": [
+          39,
+          40
+        ],
+        "stacked zero-width+base64": [
+          48,
+          50
+        ],
+        "stacked zero-width+base64+rot13": [
+          37,
+          40
+        ],
+        "stacked zero-width+homoglyph": [
+          49,
+          50
+        ],
+        "stacked zero-width+leetspeak": [
+          48,
+          50
+        ],
+        "stacked zero-width+leetspeak+homoglyph": [
+          32,
+          40
+        ],
+        "whole accent-substitution": [
+          202,
+          270
+        ],
+        "whole atbash": [
+          144,
+          150
+        ],
+        "whole backslash-escape": [
+          150,
+          150
+        ],
+        "whole base32": [
+          144,
+          150
+        ],
+        "whole base64": [
+          147,
+          150
+        ],
+        "whole base64url": [
+          148,
+          150
+        ],
+        "whole binary": [
+          149,
+          150
+        ],
+        "whole caesar": [
+          144,
+          150
+        ],
+        "whole combining-marks": [
+          142,
+          150
+        ],
+        "whole decimal-codes": [
+          147,
+          150
+        ],
+        "whole emoji-word": [
+          76,
+          150
+        ],
+        "whole fullwidth": [
+          149,
+          150
+        ],
+        "whole hex": [
+          146,
+          150
+        ],
+        "whole homoglyph": [
+          135,
+          150
+        ],
+        "whole html-entity": [
+          150,
+          150
+        ],
+        "whole leet-article": [
+          85,
+          100
+        ],
+        "whole leet-chat": [
+          76,
+          78
+        ],
+        "whole leet-full": [
+          133,
+          200
+        ],
+        "whole leet-full-short": [
+          40,
+          40
+        ],
+        "whole leet-full-wide": [
+          7,
+          80
+        ],
+        "whole leet-full-with-numbers": [
+          11,
+          20
+        ],
+        "whole leet-function-words": [
+          107,
+          120
+        ],
+        "whole leetspeak": [
+          136,
+          150
+        ],
+        "whole mime-word": [
+          150,
+          150
+        ],
+        "whole misspelling": [
+          81,
+          150
+        ],
+        "whole morse": [
+          145,
+          150
+        ],
+        "whole octal-escape": [
+          149,
+          150
+        ],
+        "whole quoted-printable": [
+          148,
+          150
+        ],
+        "whole repeated-chars": [
+          127,
+          150
+        ],
+        "whole reverse": [
+          140,
+          150
+        ],
+        "whole rot13": [
+          141,
+          150
+        ],
+        "whole rot47": [
+          101,
+          150
+        ],
+        "whole separator": [
+          135,
+          150
+        ],
+        "whole separator every character (*)": [
+          19,
+          19
+        ],
+        "whole separator every character (,)": [
+          14,
+          14
+        ],
+        "whole separator every character (-)": [
+          13,
+          13
+        ],
+        "whole separator every character (.)": [
+          58,
+          58
+        ],
+        "whole separator every character (_)": [
+          16,
+          16
+        ],
+        "whole shorthand": [
+          36,
+          150
+        ],
+        "whole styled-alphabet": [
+          150,
+          150
+        ],
+        "whole tag-characters": [
+          150,
+          150
+        ],
+        "whole url-percent": [
+          150,
+          150
+        ],
+        "whole word-reverse": [
+          100,
+          150
+        ],
+        "whole zero-width": [
+          148,
+          149
+        ]
+      },
+      "clean_changed": 24,
+      "clean_total": 7806,
+      "idempotent": 17326,
+      "idempotent_total": 17326,
+      "made_worse": 83,
+      "recovered": 8035,
+      "recovered_total": 9520
+    },
+    "balanced": {
+      "by_trick": {
+        "partial accent-substitution": [
+          37,
+          60
+        ],
+        "partial atbash": [
+          26,
+          60
+        ],
+        "partial atbash in-context": [
+          18,
+          40
+        ],
+        "partial backslash-escape": [
+          60,
+          60
+        ],
+        "partial base32": [
+          40,
+          60
+        ],
+        "partial base32 in-context": [
+          37,
+          40
+        ],
+        "partial base64": [
+          58,
+          60
+        ],
+        "partial base64 in-context": [
+          38,
+          40
+        ],
+        "partial base64url": [
+          59,
+          60
+        ],
+        "partial binary": [
+          57,
+          60
+        ],
+        "partial caesar": [
+          39,
+          60
+        ],
+        "partial caesar in-context": [
+          23,
+          40
+        ],
+        "partial combining-marks": [
+          58,
+          60
+        ],
+        "partial decimal-codes": [
+          60,
+          60
+        ],
+        "partial fullwidth": [
+          60,
+          60
+        ],
+        "partial hex": [
+          57,
+          60
+        ],
+        "partial hex in-context": [
+          40,
+          40
+        ],
+        "partial homoglyph": [
+          56,
+          60
+        ],
+        "partial html-entity": [
+          60,
+          60
+        ],
+        "partial leet-full": [
+          76,
+          100
+        ],
+        "partial leet-function-words": [
+          109,
+          120
+        ],
+        "partial leet-with-numbers": [
+          42,
+          42
+        ],
+        "partial leetspeak": [
+          55,
+          60
+        ],
+        "partial mime-word": [
+          60,
+          60
+        ],
+        "partial morse": [
+          56,
+          60
+        ],
+        "partial octal-escape": [
+          58,
+          60
+        ],
+        "partial quoted-printable": [
+          60,
+          60
+        ],
+        "partial reverse": [
+          21,
+          60
+        ],
+        "partial reverse in-context": [
+          1,
+          40
+        ],
+        "partial rot13": [
+          41,
+          60
+        ],
+        "partial rot13 in-context": [
+          28,
+          40
+        ],
+        "partial rot47": [
+          19,
+          60
+        ],
+        "partial rot47 in-context": [
+          6,
+          40
+        ],
+        "partial separator": [
+          48,
+          60
+        ],
+        "partial styled-alphabet": [
+          59,
+          60
+        ],
+        "partial url-percent": [
+          60,
+          60
+        ],
+        "partial word-reverse": [
+          6,
+          60
+        ],
+        "partial word-reverse in-context": [
+          7,
+          40
+        ],
+        "partial zero-width": [
+          60,
+          60
+        ],
+        "real html-entity": [
+          136,
+          136
+        ],
+        "real human-written": [
+          15,
+          25
+        ],
+        "stacked base64+base64": [
+          47,
+          50
+        ],
+        "stacked base64+hex": [
+          46,
+          50
+        ],
+        "stacked base64+homoglyph": [
+          49,
+          50
+        ],
+        "stacked base64+leetspeak": [
+          81,
+          90
+        ],
+        "stacked base64+reverse": [
+          46,
+          50
+        ],
+        "stacked base64+rot13+base64": [
+          36,
+          40
+        ],
+        "stacked hex+base64": [
+          47,
+          50
+        ],
+        "stacked hex+base64+reverse": [
+          35,
+          40
+        ],
+        "stacked homoglyph+accent-substitution": [
+          43,
+          50
+        ],
+        "stacked homoglyph+leetspeak": [
+          69,
+          90
+        ],
+        "stacked reverse+base64": [
+          56,
+          90
+        ],
+        "stacked rot13+base64": [
+          49,
+          50
+        ],
+        "stacked rot13+leetspeak": [
+          70,
+          90
+        ],
+        "stacked rot13+reverse+base64": [
+          39,
+          40
+        ],
+        "stacked styled-alphabet+leetspeak": [
+          43,
+          50
+        ],
+        "stacked url-percent+html-entity": [
+          50,
+          50
+        ],
+        "stacked url-percent+html-entity+base64": [
+          39,
+          40
+        ],
+        "stacked zero-width+base64": [
+          48,
+          50
+        ],
+        "stacked zero-width+base64+rot13": [
+          37,
+          40
+        ],
+        "stacked zero-width+homoglyph": [
+          48,
+          50
+        ],
+        "stacked zero-width+leetspeak": [
+          48,
+          50
+        ],
+        "stacked zero-width+leetspeak+homoglyph": [
+          32,
+          40
+        ],
+        "whole accent-substitution": [
+          191,
+          270
+        ],
+        "whole atbash": [
+          144,
+          150
+        ],
+        "whole backslash-escape": [
+          150,
+          150
+        ],
+        "whole base32": [
+          144,
+          150
+        ],
+        "whole base64": [
+          145,
+          150
+        ],
+        "whole base64url": [
+          148,
+          150
+        ],
+        "whole binary": [
+          149,
+          150
+        ],
+        "whole caesar": [
+          144,
+          150
+        ],
+        "whole combining-marks": [
+          142,
+          150
+        ],
+        "whole decimal-codes": [
+          146,
+          150
+        ],
+        "whole fullwidth": [
+          150,
+          150
+        ],
+        "whole hex": [
+          146,
+          150
+        ],
+        "whole homoglyph": [
+          135,
+          150
+        ],
+        "whole html-entity": [
+          150,
+          150
+        ],
+        "whole leet-article": [
+          85,
+          100
+        ],
+        "whole leet-chat": [
+          76,
+          78
+        ],
+        "whole leet-full": [
+          133,
+          200
+        ],
+        "whole leet-full-short": [
+          40,
+          40
+        ],
+        "whole leet-full-wide": [
+          7,
+          80
+        ],
+        "whole leet-full-with-numbers": [
+          11,
+          20
+        ],
+        "whole leet-function-words": [
+          107,
+          120
+        ],
+        "whole leetspeak": [
+          137,
+          150
+        ],
+        "whole mime-word": [
+          150,
+          150
+        ],
+        "whole morse": [
+          145,
+          150
+        ],
+        "whole octal-escape": [
+          146,
+          150
+        ],
+        "whole quoted-printable": [
+          150,
+          150
+        ],
+        "whole reverse": [
+          140,
+          150
+        ],
+        "whole rot13": [
+          142,
+          150
+        ],
+        "whole rot47": [
+          101,
+          150
+        ],
+        "whole separator": [
+          135,
+          150
+        ],
+        "whole separator every character (*)": [
+          19,
+          19
+        ],
+        "whole separator every character (,)": [
+          14,
+          14
+        ],
+        "whole separator every character (-)": [
+          13,
+          13
+        ],
+        "whole separator every character (.)": [
+          58,
+          58
+        ],
+        "whole separator every character (_)": [
+          16,
+          16
+        ],
+        "whole styled-alphabet": [
+          150,
+          150
+        ],
+        "whole tag-characters": [
+          150,
+          150
+        ],
+        "whole url-percent": [
+          150,
+          150
+        ],
+        "whole word-reverse": [
+          100,
+          150
+        ],
+        "whole zero-width": [
+          149,
+          149
+        ]
+      },
+      "clean_changed": 1,
+      "clean_total": 7806,
+      "idempotent": 17326,
+      "idempotent_total": 17326,
+      "made_worse": 70,
+      "recovered": 7572,
+      "recovered_total": 8680
+    },
+    "conservative": {
+      "by_trick": {
+        "partial atbash": [
+          26,
+          60
+        ],
+        "partial atbash in-context": [
+          18,
+          40
+        ],
+        "partial backslash-escape": [
+          60,
+          60
+        ],
+        "partial base32": [
+          40,
+          60
+        ],
+        "partial base32 in-context": [
+          37,
+          40
+        ],
+        "partial base64": [
+          58,
+          60
+        ],
+        "partial base64 in-context": [
+          38,
+          40
+        ],
+        "partial base64url": [
+          59,
+          60
+        ],
+        "partial binary": [
+          57,
+          60
+        ],
+        "partial caesar": [
+          39,
+          60
+        ],
+        "partial caesar in-context": [
+          23,
+          40
+        ],
+        "partial decimal-codes": [
+          60,
+          60
+        ],
+        "partial fullwidth": [
+          60,
+          60
+        ],
+        "partial hex": [
+          57,
+          60
+        ],
+        "partial hex in-context": [
+          40,
+          40
+        ],
+        "partial html-entity": [
+          60,
+          60
+        ],
+        "partial mime-word": [
+          60,
+          60
+        ],
+        "partial morse": [
+          56,
+          60
+        ],
+        "partial octal-escape": [
+          58,
+          60
+        ],
+        "partial quoted-printable": [
+          60,
+          60
+        ],
+        "partial reverse": [
+          21,
+          60
+        ],
+        "partial reverse in-context": [
+          1,
+          40
+        ],
+        "partial rot13": [
+          41,
+          60
+        ],
+        "partial rot13 in-context": [
+          28,
+          40
+        ],
+        "partial rot47": [
+          19,
+          60
+        ],
+        "partial rot47 in-context": [
+          6,
+          40
+        ],
+        "partial styled-alphabet": [
+          59,
+          60
+        ],
+        "partial url-percent": [
+          60,
+          60
+        ],
+        "partial word-reverse": [
+          6,
+          60
+        ],
+        "partial word-reverse in-context": [
+          7,
+          40
+        ],
+        "partial zero-width": [
+          60,
+          60
+        ],
+        "real html-entity": [
+          136,
+          136
+        ],
+        "stacked base64+base64": [
+          47,
+          50
+        ],
+        "stacked base64+hex": [
+          46,
+          50
+        ],
+        "stacked base64+reverse": [
+          46,
+          50
+        ],
+        "stacked base64+rot13+base64": [
+          36,
+          40
+        ],
+        "stacked hex+base64": [
+          47,
+          50
+        ],
+        "stacked hex+base64+reverse": [
+          35,
+          40
+        ],
+        "stacked reverse+base64": [
+          56,
+          90
+        ],
+        "stacked rot13+base64": [
+          49,
+          50
+        ],
+        "stacked rot13+reverse+base64": [
+          39,
+          40
+        ],
+        "stacked url-percent+html-entity": [
+          50,
+          50
+        ],
+        "stacked url-percent+html-entity+base64": [
+          39,
+          40
+        ],
+        "stacked zero-width+base64": [
+          48,
+          50
+        ],
+        "stacked zero-width+base64+rot13": [
+          37,
+          40
+        ],
+        "whole atbash": [
+          144,
+          150
+        ],
+        "whole backslash-escape": [
+          150,
+          150
+        ],
+        "whole base32": [
+          144,
+          150
+        ],
+        "whole base64": [
+          145,
+          150
+        ],
+        "whole base64url": [
+          148,
+          150
+        ],
+        "whole binary": [
+          149,
+          150
+        ],
+        "whole caesar": [
+          144,
+          150
+        ],
+        "whole decimal-codes": [
+          146,
+          150
+        ],
+        "whole fullwidth": [
+          150,
+          150
+        ],
+        "whole hex": [
+          146,
+          150
+        ],
+        "whole html-entity": [
+          150,
+          150
+        ],
+        "whole mime-word": [
+          150,
+          150
+        ],
+        "whole morse": [
+          145,
+          150
+        ],
+        "whole octal-escape": [
+          146,
+          150
+        ],
+        "whole quoted-printable": [
+          150,
+          150
+        ],
+        "whole reverse": [
+          140,
+          150
+        ],
+        "whole rot13": [
+          142,
+          150
+        ],
+        "whole rot47": [
+          104,
+          150
+        ],
+        "whole styled-alphabet": [
+          150,
+          150
+        ],
+        "whole tag-characters": [
+          150,
+          150
+        ],
+        "whole url-percent": [
+          150,
+          150
+        ],
+        "whole word-reverse": [
+          100,
+          150
+        ],
+        "whole zero-width": [
+          149,
+          149
+        ]
+      },
+      "clean_changed": 1,
+      "clean_total": 7806,
+      "idempotent": 17326,
+      "idempotent_total": 17326,
+      "made_worse": 70,
+      "recovered": 5277,
+      "recovered_total": 5905
+    }
+  },
+  "samples": 17326,
+  "split": "dev"
+}

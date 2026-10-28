@@ -1,0 +1,76 @@
+name: Release
+
+# Two ways to run it, both using trusted publishing (no token is stored in the repository):
+#
+#   * Push a tag such as v0.1.0a1: builds, checks that the tag matches the version in
+#     pyproject.toml, then publishes to PyPI. The "pypi" environment should require a reviewer.
+#   * Run it by hand (Actions tab, "Run workflow"): builds and publishes to TestPyPI, for a dry
+#     run. TestPyPI never accepts the same version twice, so bump the version first.
+#
+# Set up once: on pypi.org and on test.pypi.org add a trusted publisher for this repository,
+# workflow "release.yml", with the environment names "pypi" and "testpypi" respectively.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv run python -m unittest discover -s tests
+      - run: uv run python -m evaluation.gate
+      - run: uv build
+      - name: The tag must match the version being built
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          built=$(ls dist/*.whl | head -n1)
+          uv run --no-project --with packaging python - "$built" "${GITHUB_REF_NAME}" <<'PY'
+          import sys
+          from packaging.utils import parse_wheel_filename
+          from packaging.version import Version
+          name, version, *_ = parse_wheel_filename(sys.argv[1].rsplit("/", 1)[-1])
+          tag = Version(sys.argv[2].removeprefix("v"))
+          if tag != version:
+              sys.exit(f"tag {sys.argv[2]} is version {tag}, but the build is {name} {version}")
+          print(f"tag {sys.argv[2]} matches {name} {version}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish-testpypi:
+    if: github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: testpypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  publish-pypi:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
