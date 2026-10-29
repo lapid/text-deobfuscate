@@ -51,12 +51,23 @@ SEVERAL = {
 # level rewrites them: "résumé" is not a disguise of "resume". Lower case. A lone "à" is left
 # out on purpose: real phishing mail writes it for "a" (14 of 3,000 real dev rows).
 ACCENTED_ENGLISH = frozenset("""
-    abbé attaché blasé cafés café château châteaux cliché clichéd clichés communiqué consommé coup crème
+    abbé attaché blasé cafés café cañon château châteaux cliché clichéd clichés communiqué consommé coup crème crêpe
     débâcle débutante décor déjà dénouement détente divorcée élan élite émigré entrée entrées exposé façade
-    fête fiancé fiancée fiancés flambé gruyère habitué jalapeño jalapeños mêlée matinée naïf naïve naïvely naïveté
+    fête fiancé fiancée fiancés flambé gruyère habitué jalapeño jalapeños mêlée ménage matinée naïf naïve naïvely naïveté
     outré papier passé pâté pâtés piñata piñatas protégé protégée protégés raison résumé résumés risqué roué
-    rôle sauté séance señor señora señorita smörgåsbord soirée soupçon touché über voilà
+    rosé rôle sauté séance señor señora señorita smörgåsbord soirée soupçon touché über voilà
 """.split())
+ACCENTED_ENDINGS = ("s", "es", "d", "ed", "ly")
+
+
+def accented_english(word: str) -> bool:
+    """Whether the word is one of those, or the same with a plural or a regular ending."""
+    lower = unicodedata.normalize("NFC", word.lower())
+    return lower in ACCENTED_ENGLISH or any(
+        lower.endswith(ending) and lower[: -len(ending)] in ACCENTED_ENGLISH for ending in ACCENTED_ENDINGS
+    )
+
+
 # Unicode files every upright stroke under "l". Which letter is meant depends on the word.
 STROKES = frozenset("lIi")
 MAX_READINGS = 32
@@ -133,7 +144,7 @@ class Reading:
 LEET_TOKEN = re.compile(r"(?:[^\W_]|[@$!])+")
 
 
-def known_with_digits(match: re.Match) -> bool:
+def known_with_digits(match: re.Match[str]) -> bool:
     """Whether the word is part of a token that also uses digits for letters ("аcc0unt")
 
     and the token is a known word once both tricks are read.
@@ -155,11 +166,11 @@ def known_with_digits(match: re.Match) -> bool:
             plain.append(found[0][0])
         else:
             return False
-    found = read_leet("".join(plain))
-    return found is not None and found[1]
+    spelled = read_leet("".join(plain))
+    return spelled is not None and spelled[1]
 
 
-def read_word(match: re.Match) -> Reading | None:
+def read_word(match: re.Match[str]) -> Reading | None:
     """The plain-letter reading of a word with non-ASCII letters, if it has one."""
     word = match.group()
     options: list[list[str]] = []
@@ -215,12 +226,12 @@ def decide(text: str, loose: bool = False) -> list[tuple[Reading, str]]:
         if word.isascii():
             plain_words.append(word)
             continue
-        if scorer.is_word(word) or word.lower() in ACCENTED_ENGLISH:
+        if scorer.is_word(word) or accented_english(word):
             continue
         reading = read_word(match)
-        if reading is None or (reading.wholly_foreign and not reading.known):
-            if all(script_of(char) != "Latin" for char in word if char.isalpha()):
-                unreadable_foreign += 1
+        unreadable = reading is None or (reading.wholly_foreign and not reading.known)
+        if unreadable and all(script_of(char) != "Latin" for char in word if char.isalpha()):
+            unreadable_foreign += 1
         if reading is not None:
             found.append((reading, word))
     if not found:

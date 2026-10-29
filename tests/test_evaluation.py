@@ -241,7 +241,7 @@ class GateTest(unittest.TestCase):
 
     def test_resized_sets_ask_for_a_new_baseline_instead_of_comparing(self):
         new = self.baseline() | {"samples": 300}
-        bad, good = gate.compare(self.baseline(), new)
+        bad, _ = gate.compare(self.baseline(), new)
         self.assertEqual(len(bad), 1)
         self.assertIn("--update", bad[0])
 

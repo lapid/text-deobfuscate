@@ -44,7 +44,7 @@ def download(url: str, name: str) -> Path:
     if not path.exists():
         path.parent.mkdir(parents=True, exist_ok=True)
         request = urllib.request.Request(url, headers={"User-Agent": "text-deobfuscate-build/0.1"})
-        with urllib.request.urlopen(request, timeout=120) as response:
+        with urllib.request.urlopen(request, timeout=120) as response:  # nosec B310
             path.write_bytes(response.read())
     return path
 

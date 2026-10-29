@@ -3,6 +3,9 @@
 Run ``python -m evaluation.human SHEET`` with the path of the sheet of sentences and their
 disguised versions. It writes ``data/eval/human_<split>.jsonl``. Sentences are assigned to dev or test
 by their number, so the test half can stay unread by whoever writes the rules.
+
+Pass ``--project-sheet`` for the project's own sheet, whose two misplaced answers are corrected
+(see ``MISPLACED``). Without it, every answer is taken as typed.
 """
 
 import hashlib
@@ -15,7 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 EVAL = ROOT / "data" / "eval"
 SPLITS = ("dev", "test")
 
-# Answers typed under the wrong sentence, found by reading the dev half:
+# Answers typed under the wrong sentence in the project's own sheet, found by reading the dev half:
 # answer number -> number of the sentence it actually disguises.
 MISPLACED = {12: 11, 21: 20}
 
@@ -36,13 +39,15 @@ def pairs(sheet: Path) -> list[tuple[int, str, str]]:
     return out
 
 
-def main(sheet: Path) -> None:
+def main(sheet: Path, project_sheet: bool = False) -> None:
     rows: dict[str, list[dict]] = {split: [] for split in SPLITS}
-    found_pairs = pairs(sheet)
-    clean_by_number = dict(re.findall(r"^(\d+): (.*)$", sheet.read_text(encoding="utf-8"), flags=re.M))
-    for number, clean, disguised in found_pairs:
-        if number in MISPLACED:
-            clean = clean_by_number[str(MISPLACED[number])]
+    clean_by_number = {
+        int(number): clean
+        for number, clean in re.findall(r"^(\d+): (.*)$", sheet.read_text(encoding="utf-8"), flags=re.MULTILINE)
+    }
+    for number, clean, disguised in pairs(sheet):
+        if project_sheet and number in MISPLACED:
+            clean = clean_by_number[MISPLACED[number]]
         split = SPLITS[hashlib.sha256(f"human-{number}".encode()).digest()[0] % 2]
         rows[split].append({
             "id": f"human-{number:03d}", "text": disguised, "expected": clean, "tricks": ["unknown"],
@@ -57,6 +62,7 @@ def main(sheet: Path) -> None:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    arguments = [argument for argument in sys.argv[1:] if argument != "--project-sheet"]
+    if len(arguments) != 1:
         sys.exit(__doc__)
-    main(Path(sys.argv[1]))
+    main(Path(arguments[0]), project_sheet="--project-sheet" in sys.argv)

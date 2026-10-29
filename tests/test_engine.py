@@ -1,6 +1,7 @@
 import base64
 import codecs
 import unittest
+from unittest import mock
 
 from text_deobfuscate import deobfuscate, scorer, scripts
 from text_deobfuscate.engine import MAX_INPUT_CHARS, Engine
@@ -111,6 +112,18 @@ class EngineTest(unittest.TestCase):
     def test_oversized_input_is_returned_unchanged(self):
         text = b64("Please send the report before Friday.") + " " + "x" * MAX_INPUT_CHARS
         self.assertEqual(run(text).text, text)
+
+    def test_short_reversed_english_is_recovered_and_short_foreign_phrases_are_not_reversed(self):
+        for level in ("conservative", "balanced", "aggressive"):
+            self.assertEqual(deobfuscate("dlrow olleh", strictness=level).text, "world hello")
+            self.assertEqual(deobfuscate("Hello dlrow olleh", strictness=level).text, "Hello world hello")
+            self.assertEqual(deobfuscate("No pasa nada", strictness=level).text, "No pasa nada")
+
+    def test_result_says_when_the_text_was_not_fully_read(self):
+        self.assertFalse(deobfuscate("hello").truncated)
+        self.assertTrue(deobfuscate("x" * (MAX_INPUT_CHARS + 1)).truncated)
+        with mock.patch("text_deobfuscate.engine.MAX_WORK_CHARS", 10):
+            self.assertTrue(deobfuscate(b64("Please send the report before Friday.")).truncated)
 
     def test_errors_are_contained_unless_asked_for(self):
         class Broken(Transform):

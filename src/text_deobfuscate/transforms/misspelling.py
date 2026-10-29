@@ -98,10 +98,10 @@ class Misspelling(Transform):
         for match in WORD.finditer(text):
             word = match.group()
             lower = word.lower()
-            if lower in COMMON and (lower not in ALSO_WORDS or word.islower()) and not (word.isupper() and len(word) < 4):
-                if lower in ALSO_WORDS or not is_plain_word(word):
-                    found.append(Candidate(match.start(), match.end(), like(word, COMMON[lower])))
-                    continue
+            common = lower in COMMON and (lower not in ALSO_WORDS or word.islower()) and not (word.isupper() and len(word) < 4)
+            if common and (lower in ALSO_WORDS or not is_plain_word(word)):
+                found.append(Candidate(match.start(), match.end(), like(word, COMMON[lower])))
+                continue
             if len(word) > 1:
                 total += 1
                 known += scorer.is_word(word)

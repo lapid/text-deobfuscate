@@ -72,7 +72,7 @@ MAX_LOOKBACK = 80
 class Previous:
     """The word in front of a position, with the interface of a regex match on ``(\\S+)``."""
 
-    __slots__ = ("word", "position")
+    __slots__ = ("position", "word")
 
     def __init__(self, word: str, position: int) -> None:
         self.word, self.position = word, position
@@ -211,7 +211,7 @@ class Leetspeak(Transform):
                 continue
             number_last = NUMBER_LAST.fullmatch(token)
             model_like = bool(number_last and len(number_last.group(1)) <= 2 and not DOUBLED_LAST.fullmatch(token))
-            if model_like and not self.digit_ending(token):
+            if number_last is not None and model_like and not self.digit_ending(token):
                 # A model or a grade: "G5", "M14", "b4". In a text that is plainly disguised,
                 # two digits that read as letters make a word ("w45", "g07").
                 tail = number_last.group(2)
@@ -253,35 +253,35 @@ class Leetspeak(Transform):
         marks += [c.start for c in unknown if self.dense(text[c.start : c.end], c.replacement)]
         marks.sort()
         # Words read so far, by position; one dict for the whole text, so a long text stays linear.
-        known = {c.start: c for c in (*strong, *weak)}
+        decoded = {c.start: c for c in (*strong, *weak)}
         for candidate in stop:
-            if self.enough(marks, candidate) and not self.unit_context(text, candidate, known):
-                known[candidate.start] = candidate
+            if self.enough(marks, candidate) and not self.unit_context(text, candidate, decoded):
+                decoded[candidate.start] = candidate
                 yield candidate
         if len(marks) >= EVIDENCE_FOR_DIGITS:
             yield from short
             for candidate in digits:
-                word = self.number_word(text, candidate, known)
+                word = self.number_word(text, candidate, decoded)
                 if word:
                     if sentence_start(text, candidate.start):
                         word = word.capitalize()
-                    known[candidate.start] = Candidate(candidate.start, candidate.end, word)
-                    yield known[candidate.start]
+                    decoded[candidate.start] = Candidate(candidate.start, candidate.end, word)
+                    yield decoded[candidate.start]
         for candidate in lone:
             if self.enough(marks, candidate):
-                word = self.lone_word(text, candidate, known, len(marks) >= EVIDENCE_FOR_DIGITS)
+                word = self.lone_word(text, candidate, decoded, len(marks) >= EVIDENCE_FOR_DIGITS)
                 if word:
                     yield Candidate(candidate.start, candidate.end, word)
 
     @staticmethod
-    def is_unit(match: re.Match) -> bool:
+    def is_unit(match: re.Match[str]) -> bool:
         """"2nd", "21st", "5h": a number with its unit or ending. "4nd" fits none."""
         number, suffix = match.group(1), match.group(2).lower()
         if suffix in ORDINAL:
             return number.endswith(ORDINAL[suffix]) and not number.endswith("1" + ORDINAL[suffix])
         return True
 
-    def number_word(self, text: str, candidate: Candidate, decoded: dict) -> str | None:
+    def number_word(self, text: str, candidate: Candidate, decoded: dict[int, Candidate]) -> str | None:
         """What a whole number stands for in a text that is plainly disguised ("15" is "is", "734" is "tea")."""
         token = candidate.replacement
         following = NEXT_WORD.match(text, candidate.end)
@@ -350,7 +350,7 @@ class Leetspeak(Transform):
         return word.capitalize() if token[0].isupper() else word
 
     @staticmethod
-    def unit_context(text: str, candidate: Candidate, decoded: dict) -> bool:
+    def unit_context(text: str, candidate: Candidate, decoded: dict[int, Candidate]) -> bool:
         """Whether the word before the token makes it a unit or quantity ("took 1s", "in 1s")."""
         before = previous_word(text, candidate.start)
         if before is None:
@@ -374,7 +374,7 @@ class Leetspeak(Transform):
         return previous.lower() in UNIT_CONTEXT and word in {"is", "as", "am"}
 
     @staticmethod
-    def lone_word(text: str, candidate: Candidate, decoded: dict, dense: bool = False) -> str | None:
+    def lone_word(text: str, candidate: Candidate, decoded: dict[int, Candidate], dense: bool = False) -> str | None:
         """What a lone "4", "@" or "1" stands for in front of disguised text, if the words around fit."""
         before = previous_word(text, candidate.start)
         previous = before.group(1).strip(EDGE).lower() if before else ""

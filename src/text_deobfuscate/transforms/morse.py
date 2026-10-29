@@ -46,9 +46,10 @@ def decode(run: str, slash: str = "words") -> str | None:
     words: list[str] = []
     for word in word_break.split(run.translate(MARKS).strip()):
         letters = [CODES.get(group) for group in letter_break.split(word) if group]
-        if not letters or any(letter is None for letter in letters):
+        spelled = [letter for letter in letters if letter is not None]
+        if not letters or len(spelled) != len(letters):
             return None
-        words.append("".join(letters))
+        words.append("".join(spelled))
     return " ".join(words) or None
 
 

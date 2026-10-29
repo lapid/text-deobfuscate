@@ -100,8 +100,9 @@ class MimeWord(Transform):
     def propose(self, text: str) -> Iterable[Candidate]:
         for match in MIME_PHRASE.finditer(text):
             pieces = [decode_word(*word.groups()) for word in MIME_WORD.finditer(match.group())]
-            if any(piece is None for piece in pieces):
+            whole = [piece for piece in pieces if piece is not None]
+            if len(whole) != len(pieces):
                 continue
-            decoded = "".join(pieces)
+            decoded = "".join(whole)
             if decoded and decoded != match.group() and is_readable(decoded):
                 yield Candidate(match.start(), match.end(), decoded)

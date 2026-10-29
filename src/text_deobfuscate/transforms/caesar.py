@@ -1,5 +1,5 @@
 import re
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 
 from text_deobfuscate import scorer
 from text_deobfuscate.transforms.base import Candidate, Transform
@@ -129,7 +129,7 @@ class Lazy:
     has all of its chunks read under every shift.
     """
 
-    def __init__(self, compute) -> None:
+    def __init__(self, compute: Callable[[int], bool]) -> None:
         self.compute = compute
         self.known: dict[int, bool] = {}
 
@@ -169,7 +169,11 @@ class Caesar(Transform):
                 covered, total = scorer.word_coverage(whole)
                 if total and covered / total >= 0.6:
                     yield Candidate(0, len(text), whole)
-            english = Lazy(lambda i, moved=moved: reads_as_english(found[i].text.translate(moved)))
+
+            def reads(index: int, moved: dict[int, int] = moved) -> bool:
+                return reads_as_english(found[index].text.translate(moved))
+
+            english = Lazy(reads)
             # Shifted text can contain words that are also English as they stand
             # ("or" for "be"). Join runs that have only such words between them.
             joined: list[list[int]] = []

@@ -184,8 +184,9 @@ Honest list; each is measured and logged.
 - **Text in another language** passes through unchanged in nearly every case: 75 short phrases in
   six languages come back untouched at every level. A short phrase used to be reversed ("No pasa
   nada" became "adan asap oN"); texts of fewer than four words and sixteen letters are no longer
-  reversed as a whole, which also means a very short reversed text is not recovered. A longer
-  foreign text that reads as English backwards would still be reversed.
+  reversed as a whole, though a short reversed English text is still recovered as a run of
+  reversed words ("dlrow olleh" becomes "world hello"). A longer foreign text that reads as
+  English backwards would still be reversed.
 - **At `aggressive`, accents are removed from other words** ("Zoë" may become "Zoe"). Normal English
   spellings with accents (`naïve`, `café`, `résumé`, `jalapeño` and about eighty more) are kept.
 - **No recogniser yet for key-like tokens or code**, so a ticket code in base32 may be decoded.

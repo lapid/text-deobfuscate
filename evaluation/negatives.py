@@ -293,13 +293,13 @@ CATEGORIES: dict[str, tuple[Callable[[Random], str], int]] = {
 
 # Right-to-left text, where bidi marks and controls are correct.
 BIDI = (
-    "The sign said שלום‏ and nothing else.",
-    "שלום עולם‎ (hello world) is the usual first program.",
-    "مرحبا؜ 2026 بالعربية",
-    "Her name is written ⁧מרים⁩ in Hebrew.",
-    "‫זה טקסט בעברית‬",
-    "Price: ⁦€25⁩ per person.",
-    "הספר ‭ABC-123‬ נמצא במדף",
+    "The sign said שלום\u200f and nothing else.",
+    "שלום עולם\u200e (hello world) is the usual first program.",
+    "مرحبا\u061c 2026 بالعربية",
+    "Her name is written \u2067מרים\u2069 in Hebrew.",
+    "\u202bזה טקסט בעברית\u202c",
+    "Price: \u2066€25\u2069 per person.",
+    "הספר \u202dABC-123\u202c נמצא במדף",
 )
 
 # Single variation selectors are how emoji and some characters are meant to be written.

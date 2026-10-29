@@ -1,4 +1,5 @@
 from dataclasses import asdict, dataclass
+from typing import Any
 
 
 @dataclass(frozen=True, slots=True)
@@ -24,10 +25,13 @@ class Step:
 class Result:
     text: str
     steps: tuple[Step, ...] = ()
+    # True when the input was too long to read, or the scanning budget ran out before the text
+    # settled, so more of it may be decodable than was decoded.
+    truncated: bool = False
 
     @property
     def changed(self) -> bool:
         return bool(self.steps)
 
-    def to_dict(self) -> dict:
-        return {"text": self.text, "steps": [asdict(step) for step in self.steps]}
+    def to_dict(self) -> dict[str, Any]:
+        return {"text": self.text, "steps": [asdict(step) for step in self.steps], "truncated": self.truncated}

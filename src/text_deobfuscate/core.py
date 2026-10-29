@@ -13,9 +13,10 @@ def deobfuscate(text: str, *, strictness: str = "conservative", raise_errors: bo
     if strictness not in STRICTNESS_LEVELS:
         raise ValueError(f"strictness must be one of {STRICTNESS_LEVELS}, got {strictness!r}")
     try:
-        output, steps = Engine(strictness).run(text)
+        engine = Engine(strictness)
+        output, steps = engine.run(text)
     except Exception:
         if raise_errors:
             raise
         return Result(text=text)
-    return Result(text=output, steps=steps)
+    return Result(text=output, steps=steps, truncated=engine.truncated)

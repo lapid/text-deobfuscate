@@ -23,6 +23,7 @@ class InterfaceTest(unittest.TestCase):
         step = Step("base64", 0, 4, "aGk=", "hi", 0.9)
         data = Result("hi", (step,)).to_dict()
         self.assertEqual(data["steps"][0]["transform"], "base64")
+        self.assertFalse(data["truncated"])
         json.dumps(data)
 
     def test_cli_adds_nothing_when_the_output_is_piped(self):
@@ -53,7 +54,7 @@ class InterfaceTest(unittest.TestCase):
         out = io.StringIO()
         with redirect_stdout(out):
             self.assertEqual(main(["hello", "--json"]), 0)
-        self.assertEqual(json.loads(out.getvalue()), {"text": "hello", "steps": []})
+        self.assertEqual(json.loads(out.getvalue()), {"text": "hello", "steps": [], "truncated": False})
 
 
 if __name__ == "__main__":

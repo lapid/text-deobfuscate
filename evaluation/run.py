@@ -73,7 +73,7 @@ def _start_worker(name: str, level: str) -> None:
 
 
 def _one_in_worker(sample: dict) -> metrics.Outcome:
-    assert _system is not None
+    assert _system is not None  # nosec B101
     return one(_system, sample)
 
 

@@ -13,7 +13,7 @@ ENTITIES = re.compile(r"(?:&(?:#[0-9]{1,7}|#[xX][0-9a-fA-F]{1,6}|[A-Za-z][A-Za-z
 TAG = re.compile(
     r"</?(?:a|b|i|u|p|br|hr|div|span|img|html|head|body|title|meta|link|script|style|table|tr|td|th|ul|ol|li|"
     r"h[1-6]|em|strong|code|pre|form|input|button|label|select|option|iframe|svg|font|center|small|sup|sub)\b[^<>]*>",
-    re.I,
+    re.IGNORECASE,
 )
 
 PERCENT = re.compile(r"%[0-9A-Fa-f]{2}")

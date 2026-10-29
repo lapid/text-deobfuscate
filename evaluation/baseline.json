@@ -211,7 +211,7 @@
           50
         ],
         "stacked hex+base64+reverse": [
-          32,
+          34,
           40
         ],
         "stacked homoglyph+accent-substitution": [
@@ -452,7 +452,7 @@
       "idempotent": 17370,
       "idempotent_total": 17370,
       "made_worse": 82,
-      "recovered": 8031,
+      "recovered": 8033,
       "recovered_total": 9520
     },
     "balanced": {
@@ -650,7 +650,7 @@
           50
         ],
         "stacked hex+base64+reverse": [
-          32,
+          34,
           40
         ],
         "stacked homoglyph+accent-substitution": [
@@ -875,7 +875,7 @@
       "idempotent": 17370,
       "idempotent_total": 17370,
       "made_worse": 69,
-      "recovered": 7568,
+      "recovered": 7570,
       "recovered_total": 8680
     },
     "conservative": {
@@ -1029,7 +1029,7 @@
           50
         ],
         "stacked hex+base64+reverse": [
-          32,
+          34,
           40
         ],
         "stacked reverse+base64": [
@@ -1158,7 +1158,7 @@
       "idempotent": 17370,
       "idempotent_total": 17370,
       "made_worse": 69,
-      "recovered": 5273,
+      "recovered": 5275,
       "recovered_total": 5905
     }
   },

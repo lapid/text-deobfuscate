@@ -3,9 +3,10 @@
 import random
 import unittest
 
-from text_deobfuscate import deobfuscate
 from evaluation import obfuscator
 from evaluation.tricks import DEFERRED, RECORDED_AS, TRICK_LEVEL
+from text_deobfuscate import deobfuscate
+
 
 class Picks:
     """Stands in for a Random so that one shape of a trick can be asked for by name.
@@ -265,6 +266,14 @@ class LookalikeTest(unittest.TestCase):
                 self.assertEqual(run(text, level).text, text, (level, text))
         for text in ("naïve café résumé", "The Cyrillic letter а looks like the Latin a.", "Señor Núñez lives in São Paulo."):
             self.assertEqual(run(text, "balanced").text, text)
+
+    def test_inflected_and_decomposed_accented_english_stays(self):
+        for text in (
+            "The façades, touchés, rosé, ménage, crêpe, crêpes and cañon.",
+            "A r\u00e9sum\u00e9 and caf\u00e9.",
+            "A re\u0301sume\u0301 and cafe\u0301.",
+        ):
+            self.assertEqual(run(text, "aggressive").text, text)
 
     def test_aggressive_level_reads_a_lone_accented_word(self):
         text = "Dolores is survived by three children and her h\u00fcsband."

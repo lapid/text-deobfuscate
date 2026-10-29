@@ -29,7 +29,7 @@ QUOTAS = {"books": (1000, 200), "wikipedia": (2000, 4), "wikinews": (1000, 5), "
 
 # Characters whose presence makes "this text is clean" doubtful: invisible
 # characters outside emoji and non-Latin shaping, and control characters.
-DOUBTFUL = re.compile("[​⁠﻿­\U000e0000-\U000e007f\x00-\x08\x0b-\x1f\x7f-\x9f]")
+DOUBTFUL = re.compile("[\u200b⁠﻿­\U000e0000-\U000e007f\x00-\x08\x0b-\x1f\x7f-\x9f]")
 
 
 def split_of(key: str) -> str:

@@ -4,7 +4,7 @@ import statistics
 from collections import defaultdict
 from dataclasses import dataclass, field
 
-from evaluation.tricks import NORMALISING, LEVELS, RECORDED_AS, in_scope
+from evaluation.tricks import LEVELS, NORMALISING, RECORDED_AS, in_scope
 
 LENGTH_BUCKETS = (("under 20", 0, 20), ("20 to 59", 20, 60), ("60 to 149", 60, 150), ("150 and over", 150, 10**9))
 

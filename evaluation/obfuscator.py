@@ -14,7 +14,7 @@ from random import Random
 
 from evaluation.tricks import ENCODINGS
 
-ZERO_WIDTH = ("​", "‌", "‍", "⁠", "﻿")
+ZERO_WIDTH = ("\u200b", "‌", "‍", "⁠", "﻿")
 
 # Marks that overlay or sit around a letter without forming a real accented letter.
 OVERLAY_MARKS = ("̲", "̳", "̴", "̵", "̶", "̽", "̿", "͆", "͊", "͋")
@@ -354,8 +354,8 @@ def misspelling(text: str, rng: Random) -> str:
 
 # Tricks from the coverage survey.
 
-RLO, PDF = "‮", "‬"
-BIDI_MARKS = ("‎", "‏")
+RLO, PDF = "\u202e", "\u202c"
+BIDI_MARKS = ("\u200e", "\u200f")
 # Brackets are drawn mirrored inside right-to-left text.
 MIRRORED = str.maketrans("()[]{}<>", ")(][}{><")
 OTHER_INVISIBLE = ("ㅤ", "ᅟ", "ᅠ", "ﾠ", "឴", "឵", "᠋", "᠌", "᠍", "᠏")

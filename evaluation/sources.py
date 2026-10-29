@@ -35,7 +35,7 @@ SMS_URL = "https://archive.ics.uci.edu/static/public/228/sms+spam+collection.zip
 
 def _get(url: str) -> bytes:
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept-Encoding": "gzip"})
-    with urllib.request.urlopen(request, timeout=60) as response:
+    with urllib.request.urlopen(request, timeout=60) as response:  # nosec B310
         data = response.read()
         return gzip.decompress(data) if response.headers.get("Content-Encoding") == "gzip" else data
 

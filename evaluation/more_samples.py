@@ -17,8 +17,8 @@ import unicodedata
 from collections.abc import Callable, Iterator
 from random import Random
 
-from text_deobfuscate import resources
 from evaluation import obfuscator
+from text_deobfuscate import resources
 
 CARRIERS = (
     "Hi, the note says: {}",
@@ -121,11 +121,9 @@ def joined(corpus: list[dict], rng: Random) -> Iterator[tuple[str, str, str, str
     """A symbol between every character of every word, punctuation on the word included."""
     pool = [row for row in corpus if 30 <= len(row["text"]) <= 150 and "\n" not in row["text"] and "  " not in row["text"]]
     symbols = [symbol for symbol, weight in JOINERS for _ in range(weight)]
-    made = 0
-    for row in rng.sample(pool, k=min(len(pool), JOINED * 3)):
+    for made, row in enumerate(rng.sample(pool, k=min(len(pool), JOINED * 3)), start=1):
         symbol = rng.choice(symbols)
         yield f"separator every character ({symbol})", "whole", join_characters(row["text"], symbol), row["text"], "separator", row
-        made += 1
         if made == JOINED:
             return
 

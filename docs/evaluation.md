@@ -60,7 +60,7 @@ Every result is also reported by origin, so a problem confined to one kind of te
 
 `data/eval/human_<split>.jsonl` holds sentences written for this project and disguised by hand
 by the project owner: 25 in dev, 22 in test, MIT-licensed. They are built by
-`uv run python -m evaluation.human SHEET` from a sheet of sentences and their disguised versions, split by
+`uv run python -m evaluation.human --project-sheet SHEET` from a sheet of sentences and their disguised versions, split by
 sentence number; the built rows are committed, so the sheet is not needed to run the evaluation.
 The tricks are not labelled and the samples count from `balanced` up. Several use disguises that
 are out of scope or covered only narrowly (misspelling, shorthand, emoji, symbol pictures), so

@@ -37,14 +37,15 @@ def foreign_runs(found: list[Chunk]) -> list[tuple[int, int]]:
     cannot start or end one.
     """
     runs = []
-    first = last = None
+    first: int | None = None
+    last: int | None = None
     for index, chunk in enumerate([*found, None]):
         if chunk is not None and not chunk.plain:
             if chunk.letters:
                 first = index if first is None else first
                 last = index
             continue
-        if first is not None:
+        if first is not None and last is not None:
             runs.append((first, last))
         first = last = None
     return runs

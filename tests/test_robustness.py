@@ -5,6 +5,7 @@ Inputs here are random but seeded, so a failure repeats. The sizes keep the whol
 
 import base64
 import string
+import sys
 import tempfile
 import time
 import unittest
@@ -15,11 +16,15 @@ from random import Random
 from text_deobfuscate import STRICTNESS_LEVELS, deobfuscate
 
 SEED = 20261027
-SLOWEST_ALLOWED = 5.0   # seconds for one short text
+# The limits were set on Linux. Shared macOS and Windows runners run this pure-Python work two or
+# three times slower, so the same limits would fail there without anything having got worse.
+SLOWDOWN = 1.0 if sys.platform.startswith("linux") else 3.0
+SLOWEST_ALLOWED = 5.0 * SLOWDOWN   # seconds for one short text
+SLOWEST_LONG_ALLOWED = 30.0 * SLOWDOWN   # seconds for a text of 100,000 characters
 PROSE = "the quick brown fox jumps over the lazy dog and then it was quite late for everyone to leave"
 FRAGMENTS = (
     "%41%42", "&#65;", "&amp;", "\\x41", "\\u0041", "=?UTF-8?B?aGk=?=", "=41", "aGVsbG8gd29ybGQ=", "68656c6c6f",
-    "01100001", ".- -...", "c.l.i.c.k", "f r e e", "h3ll0", "pr1z3", "​", "‮", "́", "ａｂｃ", "𝐡𝐢",
+    "01100001", ".- -...", "c.l.i.c.k", "f r e e", "h3ll0", "pr1z3", "\u200b", "\u202e", "́", "ａｂｃ", "𝐡𝐢",
     "Ꭺ", "а", "е", "ο", "!", "@", "1", "4", "0", "...", "'", '"', "\\", "\n", "\t", "  ", "0x", "ZZ", "==",
 )
 
@@ -41,7 +46,7 @@ def corpus(rng: Random, count: int) -> list[str]:
         else:
             start = rng.randrange(len(PROSE))
             text = PROSE[start : start + rng.randint(1, 60)]
-            text = "".join(char + rng.choice(("", "", ".", "-", "​")) for char in text)
+            text = "".join(char + rng.choice(("", "", ".", "-", "\u200b")) for char in text)
         out.append(text)
     return out
 
@@ -74,14 +79,14 @@ class FuzzTest(unittest.TestCase):
         for text in (
             "a" * 100_000,
             "1" * 100_000,
-            "​" * 100_000,
+            "\u200b" * 100_000,
             "\n" * 100_000,
             " ".join(rng.choice(PROSE.split()) for _ in range(20_000))[:100_000],
             "".join(rng.choice(string.printable) for _ in range(30_000)),   # 100,000 takes about 10 s
         ):
             started = time.perf_counter()
             deobfuscate(text, strictness="aggressive", raise_errors=True)
-            self.assertLess(time.perf_counter() - started, 30.0)
+            self.assertLess(time.perf_counter() - started, SLOWEST_LONG_ALLOWED)
 
 
 class NeverExecutesTest(unittest.TestCase):

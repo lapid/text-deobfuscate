@@ -5,6 +5,23 @@ All notable changes to this project are recorded here. The format follows
 [Semantic Versioning](https://semver.org/), with the usual caveat that anything before 1.0 may
 change in a minor release.
 
+## [Unreleased]
+
+### Added
+
+- `Result.truncated` (and `"truncated"` in `--json` output) is true when the input was over the
+  size limit or the scanning budget ran out, so the text may be only partly decoded.
+- Ruff, mypy (strict) and bandit run in CI, and the build checks that the wheel carries
+  `py.typed` and the data files.
+
+### Fixed
+
+- Short reversed English ("dlrow olleh") is recovered again as a run of reversed words; only
+  reversing a short text as a whole stays off, which keeps "No pasa nada" untouched.
+- Accented English with a plural or regular ending ("façades", "touchés", "crêpes"), a few more
+  words ("rosé", "ménage", "cañon") and accents typed as combining marks are no longer rewritten.
+- Raw bidirectional control characters in the evaluation sources are written as escapes.
+
 ## [0.1.0a1] - 2026-10-29
 
 First public release, `0.1.0a1`: an alpha pre-release (`pip install` skips it unless asked with `--pre`). `0.1.0` follows

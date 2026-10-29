@@ -5,7 +5,6 @@ from text_deobfuscate import scorer
 from text_deobfuscate.transforms.base import Candidate, Transform
 from text_deobfuscate.transforms.runs import chunks, foreign_runs, reads_as_english
 
-
 # A long unbroken token may be another encoding written backwards; base64 padding then comes first.
 ENCODED = re.compile(r"(?<![A-Za-z0-9+/=_-])={0,2}(?=[A-Za-z0-9+/_-]*[a-z])(?=[A-Za-z0-9+/_-]*[A-Z0-9])[A-Za-z0-9+/_-]{16,}(?![A-Za-z0-9+/=_-])")
 
@@ -16,7 +15,8 @@ MAX_GAP = 2
 # two misspelt words around "is" ("waht is rael") read as English backwards by chance.
 MIN_JOINED_LETTERS = 12
 # A short text of few words can read as English backwards by chance: Spanish "No pasa nada" is
-# "adan asap oN". The whole of a text is reversed only if it has this many words or letters.
+# "adan asap oN". The whole of a text, or each of its words, is reversed only if it has this many
+# words or letters. Runs of words inside a longer text are not held to it.
 SHORT_WORDS = 4
 SHORT_LETTERS = 16
 
@@ -76,9 +76,8 @@ class Reverse(Transform):
         # recovers the letters but leaves the word order inverted, so this is proposed
         # as well. The two score alike, and the engine keeps the first of equal
         # proposals, so the one the punctuation points to is yielded first.
-        if len(text.split()) < SHORT_WORDS and scorer.letter_count(text) < SHORT_LETTERS:
-            return
-        if " " in text and written_word_by_word(text):
+        short = len(text.split()) < SHORT_WORDS and scorer.letter_count(text) < SHORT_LETTERS
+        if not short and " " in text and written_word_by_word(text):
             by_word = each_word(text)
             covered, total = scorer.word_coverage(by_word)
             if total and covered / total >= 0.6:
@@ -86,7 +85,7 @@ class Reverse(Transform):
         # Reversed text still contains the odd word that reads as English ("saw", "no"),
         # so the whole text is always tried; the engine keeps it only if it reads better.
         covered, total = scorer.word_coverage(text[::-1])
-        whole = bool(total) and covered / total >= 0.6
+        whole = not short and bool(total) and covered / total >= 0.6
         if whole:
             yield Candidate(0, len(text), text[::-1])
         found = chunks(text)
@@ -112,9 +111,9 @@ class Reverse(Transform):
                 continue
             start, end = found[first].start, found[last].end
             span = text[start:end][::-1]
-            if (first, last) not in runs and any(chunk.plain for chunk in found[first : last + 1]):
-                if scorer.letter_count(span) < MIN_JOINED_LETTERS:
-                    continue
+            plain_inside = any(chunk.plain for chunk in found[first : last + 1])
+            if (first, last) not in runs and plain_inside and scorer.letter_count(span) < MIN_JOINED_LETTERS:
+                continue
             # The same run with each of its words reversed in place. Of two proposals
             # that score alike the engine keeps the first, so the reading the
             # punctuation points to goes first.

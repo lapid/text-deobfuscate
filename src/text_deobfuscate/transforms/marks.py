@@ -28,7 +28,7 @@ def is_mark(char: str) -> bool:
 @cache
 def spelling_marks() -> frozenset[str]:
     """Marks some alphabet spells with: those Unicode composes into a letter."""
-    found = set()
+    found: set[str] = set()
     for code in range(0xC0, 0x2000):
         char = chr(code)
         if char.isalpha():

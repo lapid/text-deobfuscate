@@ -34,10 +34,11 @@ MAX_LAYER_RUNS = 200
 # How many characters one call may scan in total, summed over every pass and every layer.
 # A pass reads the whole text, so a long text that keeps finding things to change would
 # otherwise cost passes times length: 100,000 random characters ran past 35 seconds. A
-# 5,000-character text can still make 400 passes, more than MAX_STEPS allows, so ordinary
-# input never reaches this; a text of 100,000 characters gets about 10. That keeps the worst
-# case, 100,000 random printable characters, near ten seconds at the most (it was 14 at four
-# million). A very long text that keeps finding things may then be only partly decoded.
+# 5,000-character text gets 200 passes, as many as MAX_STEPS allows, and a text of 100,000
+# characters gets about 10. That keeps the worst case, 100,000 random printable characters,
+# near ten seconds at the most (it was 14 at four million). Every pass and every nested layer
+# draws on the same budget, so a long text with many layers may be only partly decoded; the
+# result says so with ``truncated``.
 MAX_WORK_CHARS = 1_000_000
 
 
@@ -79,6 +80,7 @@ class Engine:
         self.policy = POLICIES[level]
         self.layer_runs = 0
         self.work_left = MAX_WORK_CHARS
+        self.truncated = False
         limit = LEVELS.index(level)
         self.transforms = tuple(t for t in transforms if LEVELS.index(t.level) <= limit)
         # Verdicts depend only on the transform and the two texts, and the same
@@ -87,10 +89,12 @@ class Engine:
 
     def run(self, text: str, depth: int = 0) -> tuple[str, tuple[Step, ...]]:
         if len(text) > MAX_INPUT_CHARS:
+            self.truncated = True
             return text, ()
         if depth == 0:
             self.layer_runs = 0
             self.work_left = MAX_WORK_CHARS
+            self.truncated = False
         steps: list[Step] = []
         for _ in range(MAX_STEPS):
             accepted = self.best_proposals(text, depth)
@@ -113,6 +117,7 @@ class Engine:
     def best_proposals(self, text: str, depth: int) -> list[Accepted]:
         """The proposals to apply next, in text order; empty when nothing is left to do."""
         if self.work_left <= 0:
+            self.truncated = True
             return []
         self.work_left -= len(text)
         protected = merged(protected_spans(text))
@@ -126,7 +131,6 @@ class Engine:
             if late and depth:
                 continue
             best: Accepted | None = None
-            winner: Transform | None = None
             proposed: list[tuple[Transform, list[Accepted]]] = []
             for transform in self.transforms:
                 if transform.judged != judged or transform.late != late:
@@ -143,10 +147,11 @@ class Engine:
                         verdicts.append(verdict)
                 top = max(verdicts, key=lambda verdict: verdict.weight, default=None)
                 if top is not None and (best is None or top.weight > best.weight):
-                    best, winner = top, transform
+                    best = top
                 proposed.append((transform, verdicts))
             if best is None:
                 continue
+            winner = best.transform
             if judged:
                 return [best]
             # A certain transform decided on the text as a whole, so everything it
@@ -181,7 +186,8 @@ class Engine:
                                                    found.confidence, found.gain, found.weight)
 
     def decide(self, transform: Transform, candidate: Candidate, before: str, depth: int) -> Accepted | None:
-        final, inner_steps = candidate.replacement, ()
+        final = candidate.replacement
+        inner_steps: tuple[Step, ...] = ()
         if depth < MAX_DEPTH and self.layer_runs < MAX_LAYER_RUNS:
             self.layer_runs += 1
             final, inner_steps = self.run(candidate.replacement, depth + 1)

@@ -1,5 +1,6 @@
 """Letters and digits written in decorative Unicode forms."""
 
+import re
 import unicodedata
 from collections.abc import Iterable
 
@@ -41,7 +42,7 @@ class StyledAlphabet(Transform):
 
         A run needs two styled letters. One on its own is usually a maths variable.
         """
-        run: list = []
+        run: list[re.Match[str]] = []
         for match in [*CHUNK.finditer(text), None]:
             if match is not None and any(is_styled(char) for char in match.group()):
                 run.append(match)
@@ -50,7 +51,7 @@ class StyledAlphabet(Transform):
                 start, end = run[0].start(), run[-1].end()
                 span = text[start:end]
                 if sum(is_styled(char) for char in span) >= 2:
-                    folded = "".join(plain(char) if is_styled(char) or is_letterlike(char) else char for char in span)
+                    folded = "".join((plain(char) or char) if is_styled(char) or is_letterlike(char) else char for char in span)
                     yield Candidate(start, end, folded)
             run = []
 
@@ -77,7 +78,7 @@ class Fullwidth(Transform):
         """
         if scripts_in(text) & EAST_ASIAN:
             return
-        run: list = []
+        run: list[re.Match[str]] = []
         for match in [*CHUNK.finditer(text), None]:
             if match is not None and any(is_fullwidth(char) for char in match.group()):
                 run.append(match)
