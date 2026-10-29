@@ -15,6 +15,10 @@ MAX_GAP = 2
 # A run joined across such words rests on less, so it must be longer. With ten letters,
 # two misspelt words around "is" ("waht is rael") read as English backwards by chance.
 MIN_JOINED_LETTERS = 12
+# A short text of few words can read as English backwards by chance: Spanish "No pasa nada" is
+# "adan asap oN". The whole of a text is reversed only if it has this many words or letters.
+SHORT_WORDS = 4
+SHORT_LETTERS = 16
 
 
 def each_word(span: str) -> str:
@@ -72,6 +76,8 @@ class Reverse(Transform):
         # recovers the letters but leaves the word order inverted, so this is proposed
         # as well. The two score alike, and the engine keeps the first of equal
         # proposals, so the one the punctuation points to is yielded first.
+        if len(text.split()) < SHORT_WORDS and scorer.letter_count(text) < SHORT_LETTERS:
+            return
         if " " in text and written_word_by_word(text):
             by_word = each_word(text)
             covered, total = scorer.word_coverage(by_word)

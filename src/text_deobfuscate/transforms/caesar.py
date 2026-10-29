@@ -122,6 +122,23 @@ class Atbash(WholeTextCipher):
         return text.translate(ATBASH)
 
 
+class Lazy:
+    """``reads[i]``, worked out the first time it is asked for.
+
+    Most checks stop at the first chunk that fails, so a long text of random characters never
+    has all of its chunks read under every shift.
+    """
+
+    def __init__(self, compute) -> None:
+        self.compute = compute
+        self.known: dict[int, bool] = {}
+
+    def __getitem__(self, index: int) -> bool:
+        if index not in self.known:
+            self.known[index] = self.compute(index)
+        return self.known[index]
+
+
 class Caesar(Transform):
     """Letters shifted along the alphabet. Rot13 is the shift by 13."""
 
@@ -152,7 +169,7 @@ class Caesar(Transform):
                 covered, total = scorer.word_coverage(whole)
                 if total and covered / total >= 0.6:
                     yield Candidate(0, len(text), whole)
-            english = [reads_as_english(chunk.text.translate(moved)) for chunk in found]
+            english = Lazy(lambda i, moved=moved: reads_as_english(found[i].text.translate(moved)))
             # Shifted text can contain words that are also English as they stand
             # ("or" for "be"). Join runs that have only such words between them.
             joined: list[list[int]] = []
@@ -169,7 +186,7 @@ class Caesar(Transform):
                     last -= 1
                 if first > last:
                     continue
-                outside = [i for i in range(len(found)) if (i < first or i > last) and found[i].letters]
+                outside = (i for i in range(len(found)) if (i < first or i > last) and found[i].letters)
                 if all(english[i] or not found[i].plain for i in outside):
                     # Everything else fits the same shift: the whole text was shifted.
                     start, end = 0, len(text)

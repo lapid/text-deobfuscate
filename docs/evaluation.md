@@ -28,7 +28,7 @@ Run from the repository root.
 
 Each split has three files in `data/eval/<split>/`.
 
-- **`clean.jsonl`** (7,806 texts on dev): must come back unchanged. The last 191 are digit
+- **`clean.jsonl`** (7,850 texts on dev): must come back unchanged. The last 44 are short phrases in other languages and English with accents; before them, 191 are digit
   look-alikes of function words (`digit-*` categories: "It took 1s", "Page 4 is blank", "the h1 tag").
   - 7,000 real texts: 2,000 from Wikipedia, 1,500 from Stack Exchange questions, 1,500 personal
     text messages, 1,000 from Wikinews, 1,000 from public-domain books.
@@ -60,7 +60,7 @@ Every result is also reported by origin, so a problem confined to one kind of te
 
 `data/eval/human_<split>.jsonl` holds sentences written for this project and disguised by hand
 by the project owner: 25 in dev, 22 in test, MIT-licensed. They are built by
-`uv run python -m evaluation.human` from a sheet kept in the maintainer's private repository, and split by
+`uv run python -m evaluation.human SHEET` from a sheet of sentences and their disguised versions, split by
 sentence number; the built rows are committed, so the sheet is not needed to run the evaluation.
 The tricks are not labelled and the samples count from `balanced` up. Several use disguises that
 are out of scope or covered only narrowly (misspelling, shorthand, emoji, symbol pictures), so

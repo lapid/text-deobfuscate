@@ -34,9 +34,11 @@ MAX_LAYER_RUNS = 200
 # How many characters one call may scan in total, summed over every pass and every layer.
 # A pass reads the whole text, so a long text that keeps finding things to change would
 # otherwise cost passes times length: 100,000 random characters ran past 35 seconds. A
-# 5,000-character text can still make 800 passes, more than MAX_STEPS allows, so ordinary
-# input never reaches this; a text of 100,000 characters gets about 40.
-MAX_WORK_CHARS = 4_000_000
+# 5,000-character text can still make 400 passes, more than MAX_STEPS allows, so ordinary
+# input never reaches this; a text of 100,000 characters gets about 10. That keeps the worst
+# case, 100,000 random printable characters, near ten seconds at the most (it was 14 at four
+# million). A very long text that keeps finding things may then be only partly decoded.
+MAX_WORK_CHARS = 1_000_000
 
 
 @dataclass(frozen=True, slots=True)

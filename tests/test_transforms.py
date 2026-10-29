@@ -579,6 +579,18 @@ class LeaveAloneTest(unittest.TestCase):
                 result = run(text, level)
                 self.assertEqual((result.text, result.steps), (text, ()), (level, text))
 
+    def test_short_phrases_in_other_languages(self):
+        # "No pasa nada" read backwards is "adan asap oN", three English words by chance.
+        self.untouched("No pasa nada", "Hasta la vista", "Ça va très bien", "Ich habe keine Zeit")
+
+    def test_long_backwards_text_is_still_read(self):
+        self.assertEqual(run(".gnihtyreve ot gniht doog a si noitcnuf siht", "conservative").text, "this function is a good thing to everything.")
+
+    def test_english_words_spelt_with_accents(self):
+        # Correct English spellings, not disguises, even at the level that rewrites lone accents.
+        for text in ("The naïve café owner updated her résumé on Friday.", "A soupçon of jalapeño in the crème brûlée."):
+            self.assertEqual(run(text, "aggressive").text, text)
+
     def test_numbers_and_codes(self):
         self.untouched(
             "Take route 66 west for 3 miles, then exit 4B.",

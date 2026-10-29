@@ -211,7 +211,7 @@
           50
         ],
         "stacked hex+base64+reverse": [
-          35,
+          32,
           40
         ],
         "stacked homoglyph+accent-substitution": [
@@ -387,7 +387,7 @@
           150
         ],
         "whole reverse": [
-          140,
+          139,
           150
         ],
         "whole rot13": [
@@ -447,12 +447,12 @@
           149
         ]
       },
-      "clean_changed": 24,
-      "clean_total": 7806,
-      "idempotent": 17326,
-      "idempotent_total": 17326,
-      "made_worse": 83,
-      "recovered": 8035,
+      "clean_changed": 22,
+      "clean_total": 7850,
+      "idempotent": 17370,
+      "idempotent_total": 17370,
+      "made_worse": 82,
+      "recovered": 8031,
       "recovered_total": 9520
     },
     "balanced": {
@@ -650,7 +650,7 @@
           50
         ],
         "stacked hex+base64+reverse": [
-          35,
+          32,
           40
         ],
         "stacked homoglyph+accent-substitution": [
@@ -814,7 +814,7 @@
           150
         ],
         "whole reverse": [
-          140,
+          139,
           150
         ],
         "whole rot13": [
@@ -871,11 +871,11 @@
         ]
       },
       "clean_changed": 1,
-      "clean_total": 7806,
-      "idempotent": 17326,
-      "idempotent_total": 17326,
-      "made_worse": 70,
-      "recovered": 7572,
+      "clean_total": 7850,
+      "idempotent": 17370,
+      "idempotent_total": 17370,
+      "made_worse": 69,
+      "recovered": 7568,
       "recovered_total": 8680
     },
     "conservative": {
@@ -1029,7 +1029,7 @@
           50
         ],
         "stacked hex+base64+reverse": [
-          35,
+          32,
           40
         ],
         "stacked reverse+base64": [
@@ -1121,7 +1121,7 @@
           150
         ],
         "whole reverse": [
-          140,
+          139,
           150
         ],
         "whole rot13": [
@@ -1154,14 +1154,14 @@
         ]
       },
       "clean_changed": 1,
-      "clean_total": 7806,
-      "idempotent": 17326,
-      "idempotent_total": 17326,
-      "made_worse": 70,
-      "recovered": 5277,
+      "clean_total": 7850,
+      "idempotent": 17370,
+      "idempotent_total": 17370,
+      "made_worse": 69,
+      "recovered": 5273,
       "recovered_total": 5905
     }
   },
-  "samples": 17326,
+  "samples": 17370,
   "split": "dev"
 }

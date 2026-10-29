@@ -1,17 +1,17 @@
 """Turns the hand-disguised sentences into evaluation samples.
 
-Run ``python -m evaluation.human``. It reads ``data/human/to_disguise.txt`` (kept in the maintainer's private repository) and
-writes ``data/eval/human_<split>.jsonl``. Sentences are assigned to dev or test
+Run ``python -m evaluation.human SHEET`` with the path of the sheet of sentences and their
+disguised versions. It writes ``data/eval/human_<split>.jsonl``. Sentences are assigned to dev or test
 by their number, so the test half can stay unread by whoever writes the rules.
 """
 
 import hashlib
 import json
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SHEET = ROOT / "data" / "human" / "to_disguise.txt"
 EVAL = ROOT / "data" / "eval"
 SPLITS = ("dev", "test")
 
@@ -20,11 +20,11 @@ SPLITS = ("dev", "test")
 MISPLACED = {12: 11, 21: 20}
 
 
-def pairs() -> list[tuple[int, str, str]]:
+def pairs(sheet: Path) -> list[tuple[int, str, str]]:
     """(number, clean sentence, disguised sentence) for every answered line."""
     out = []
     number, clean = None, None
-    for line in SHEET.read_text(encoding="utf-8").splitlines():
+    for line in sheet.read_text(encoding="utf-8").splitlines():
         if match := re.match(r"(\d+): (.*)", line):
             number, clean = int(match.group(1)), match.group(2)
         elif line.startswith(">") and number is not None:
@@ -36,10 +36,10 @@ def pairs() -> list[tuple[int, str, str]]:
     return out
 
 
-def main() -> None:
+def main(sheet: Path) -> None:
     rows: dict[str, list[dict]] = {split: [] for split in SPLITS}
-    found_pairs = pairs()
-    clean_by_number = dict(re.findall(r"^(\d+): (.*)$", SHEET.read_text(encoding="utf-8"), flags=re.M))
+    found_pairs = pairs(sheet)
+    clean_by_number = dict(re.findall(r"^(\d+): (.*)$", sheet.read_text(encoding="utf-8"), flags=re.M))
     for number, clean, disguised in found_pairs:
         if number in MISPLACED:
             clean = clean_by_number[str(MISPLACED[number])]
@@ -57,4 +57,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) != 2:
+        sys.exit(__doc__)
+    main(Path(sys.argv[1]))

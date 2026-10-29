@@ -13,7 +13,7 @@ import json
 from pathlib import Path
 from random import Random
 
-from evaluation import leet_context, more_samples, negatives, obfuscator
+from evaluation import leet_context, more_samples, negatives, obfuscator, other_languages
 from evaluation.tricks import DEFERRED, NORMALISING, SURVEY, TRICK_LEVEL
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -57,6 +57,9 @@ def clean_rows(split: str, corpus: list[dict], rng: Random) -> list[dict]:
     # Words that look encoded, for the decoders that did worst.
     words = Random(f"{SEED}-{split}-more-clean")
     rows += [{"category": category, "text": text, **OURS} for category, text in negatives.generate(words, more_samples.CATEGORIES)]
+    # Short phrases in other languages and English with accents, again from a stream of their own.
+    languages = Random(f"{SEED}-{split}-other-languages-clean")
+    rows += [{"category": category, "text": text, **OURS} for category, text in negatives.generate(languages, other_languages.categories(split))]
     return [
         {"id": f"{split}-clean-{n:05d}", "text": row["text"], "expected": row["text"], "tricks": [], "mode": "clean",
          "category": row["category"], **{key: row[key] for key in CREDIT}, "split": split}

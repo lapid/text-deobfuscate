@@ -47,6 +47,16 @@ SEVERAL = {
     "ƅ": "b", "ϝ": "f", "ϵ": "e", "ς": "c", "ϛ": "c", "ɥ": "u", "ʘ": "o", "µ": "u",
     "ե": "t", "ր": "n", "թ": "p", "և": "u", "Ւ": "t", "υ": "uv",
 }
+# English words that are normally written with accents. They are correct as they stand, so no
+# level rewrites them: "résumé" is not a disguise of "resume". Lower case. A lone "à" is left
+# out on purpose: real phishing mail writes it for "a" (14 of 3,000 real dev rows).
+ACCENTED_ENGLISH = frozenset("""
+    abbé attaché blasé cafés café château châteaux cliché clichéd clichés communiqué consommé coup crème
+    débâcle débutante décor déjà dénouement détente divorcée élan élite émigré entrée entrées exposé façade
+    fête fiancé fiancée fiancés flambé gruyère habitué jalapeño jalapeños mêlée matinée naïf naïve naïvely naïveté
+    outré papier passé pâté pâtés piñata piñatas protégé protégée protégés raison résumé résumés risqué roué
+    rôle sauté séance señor señora señorita smörgåsbord soirée soupçon touché über voilà
+""".split())
 # Unicode files every upright stroke under "l". Which letter is meant depends on the word.
 STROKES = frozenset("lIi")
 MAX_READINGS = 32
@@ -205,7 +215,7 @@ def decide(text: str, loose: bool = False) -> list[tuple[Reading, str]]:
         if word.isascii():
             plain_words.append(word)
             continue
-        if scorer.is_word(word):
+        if scorer.is_word(word) or word.lower() in ACCENTED_ENGLISH:
             continue
         reading = read_word(match)
         if reading is None or (reading.wholly_foreign and not reading.known):

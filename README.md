@@ -63,6 +63,14 @@ It reads standard input when given no argument, so it pipes. Piped or redirected
 text and nothing else — no trailing newline is added, so `text-deobfuscate x > file` holds exactly the
 text. A terminal gets a line ending, so the prompt does not land mid-sentence.
 
+### What is public
+
+`deobfuscate`, `Result`, `Step`, `STRICTNESS_LEVELS` and `__version__`, and the `text-deobfuscate`
+command. Everything else in the package (`engine`, `scorer`, `transforms`, `protect`, `scripts` and
+the rest) is internal and may change in any release, even though Python lets you import it. The
+package ships type information (`py.typed`); the public names check cleanly with mypy, and the
+internals still have some warnings.
+
 ## Strictness
 
 Three levels, because the tricks differ in how certain they are. `conservative` is the default.
@@ -97,14 +105,14 @@ used up in October 2026. Treat every figure as an upper bound for text you have 
 Recovery means the text came back exactly, ignoring capital letters; clean texts changed is
 measured strictly. The tool is judged first on **not changing clean text**.
 
-**Development sets, thirty-two transforms (2026-10-27):** 7,806 clean texts, about 9,500
+**Development sets, thirty-two transforms (2026-10-29):** 7,850 clean texts, about 9,500
 obfuscated ones, and the 3,000 real phishing sentences (kept outside the repository).
 
 | Level | Clean texts changed | Recovered | Made worse | Real phishing | Hand-disguised |
 |---|---|---|---|---|---|
-| `conservative` | 0.01% (1 of 7,806) | 89.4% (5,277 of 5,905) | 1.2% | — | — |
-| `balanced` | 0.01% (1 of 7,806) | 88.2% (10,296 of 11,680) | 0.6% | 90.8% | 15 of 25 |
-| `aggressive` | 0.31% (24 of 7,806) | 86.8% (10,868 of 12,520) | 0.7% | 94.4% | 17 of 25 |
+| `conservative` | 0.01% (1 of 7,850) | 89.3% (5,273 of 5,905) | 1.2% | — | — |
+| `balanced` | 0.01% (1 of 7,850) | 88.1% (10,292 of 11,680) | 0.6% | 90.8% | 15 of 25 |
+| `aggressive` | 0.28% (22 of 7,850) | 86.8% (10,864 of 12,520) | 0.7% | 94.4% | 17 of 25 |
 
 Each level is scored on the samples it is meant to undo, so the denominators differ and the rows
 are not comparable with each other. Adding transforms or harder samples lowers a total without
@@ -137,8 +145,9 @@ accent substitution 62–71%. Encodings that fill a whole text (base64, hex, bas
 above 90%.
 
 **Time:** the median text takes about 2 ms and the 95th percentile about 15 ms. The slowest
-inputs are long and hostile: 100,000 random printable characters take about 14 seconds, and
-everything else tested at that size takes under 5. One call scans at most four million characters.
+inputs are long and hostile: 100,000 random printable characters take about ten seconds at
+`aggressive` (six at `balanced`), and everything else tested at that size takes under 5. One call
+scans at most one million characters in all.
 
 **The test split** was run once, on 2026-10-12, for twenty-three transforms. It showed clean
 texts changed at 3, 13 and 38 of 7,442 for the three levels. Reading the 13 at `balanced` on
@@ -159,8 +168,11 @@ Honest list; each is measured and logged.
   "How well it works".
 - **Leetspeak** is about 58% exact on someone else's generator. Lone `1` and `4` in lightly
   disguised text need a second disguised word nearby, and the wider table (`8`, `9`, `2`) is weak.
-- **Time and size:** inputs over 100,000 characters are returned unchanged; 100,000 random
-  printable characters take about 14 seconds.
+- **Time and size:** inputs over 100,000 characters are returned unchanged, and one call stops
+  scanning after a fixed budget, so a very long text may be only partly decoded. The slowest
+  input found, 100,000 random printable characters, takes about ten seconds at `aggressive` and
+  six at `balanced`; 30,000 take about a second. If you pass untrusted text to it in a service,
+  cap its length (a few thousand characters covers messages and emails) and use a timeout.
 - **A text reversed word by word cannot be told from a wholly reversed one** unless a full stop
   settles it, so 51 of 210 such samples come back with the words in the wrong order. 44 of those
   are still perfectly legible; this is a limit of the ambiguity, not a bug to fix.
@@ -169,8 +181,13 @@ Honest list; each is measured and logged.
 - **A capital hidden behind a leetspeak digit is lost** (`Cl1ck` → `click`). Recovery is measured
   ignoring capitals for this reason.
 - **Shifted or reversed words inside otherwise clean text** recover poorly.
-- **A short text in another language whose words all read as English backwards** is reversed
-  ("No pasa nada").
+- **Text in another language** passes through unchanged in nearly every case: 75 short phrases in
+  six languages come back untouched at every level. A short phrase used to be reversed ("No pasa
+  nada" became "adan asap oN"); texts of fewer than four words and sixteen letters are no longer
+  reversed as a whole, which also means a very short reversed text is not recovered. A longer
+  foreign text that reads as English backwards would still be reversed.
+- **At `aggressive`, accents are removed from other words** ("Zoë" may become "Zoe"). Normal English
+  spellings with accents (`naïve`, `café`, `résumé`, `jalapeño` and about eighty more) are kept.
 - **No recogniser yet for key-like tokens or code**, so a ticket code in base32 may be decoded.
 - **English only.** Other languages and scripts pass through unchanged, by design.
 - **Deferred to version 2:** bidirectional controls, variation-selector payloads, Punycode, part
@@ -182,7 +199,7 @@ Honest list; each is measured and logged.
 ## Testing and the regression gate
 
 ```sh
-uv run python -m unittest discover -s tests   # 122 unit tests
+uv run python -m unittest discover -s tests   # 125 unit tests
 uv run python -m evaluation.gate              # the regression gate: pass or fail
 uv run python -m evaluation.run --detail      # the full report, per category and per trick
 ```

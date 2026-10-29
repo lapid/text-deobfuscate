@@ -77,7 +77,7 @@ class FuzzTest(unittest.TestCase):
             "​" * 100_000,
             "\n" * 100_000,
             " ".join(rng.choice(PROSE.split()) for _ in range(20_000))[:100_000],
-            "".join(rng.choice(string.printable) for _ in range(30_000)),   # 100,000 takes about 14 s
+            "".join(rng.choice(string.printable) for _ in range(30_000)),   # 100,000 takes about 10 s
         ):
             started = time.perf_counter()
             deobfuscate(text, strictness="aggressive", raise_errors=True)

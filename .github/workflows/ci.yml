@@ -25,3 +25,21 @@ jobs:
         run: uv run python -m evaluation.gate
       - name: Build the package
         run: uv build
+
+  # The package is pure Python and says "OS independent", so the tests run on the other systems
+  # too. The regression gate scores for several minutes and is run on Linux only.
+  other-systems:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          python-version: "3.12"
+      - name: Unit tests
+        run: uv run python -m unittest discover -s tests
+      - name: Build the package
+        run: uv build

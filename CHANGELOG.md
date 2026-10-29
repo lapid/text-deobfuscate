@@ -24,13 +24,13 @@ once an independent set has been run and early feedback is in.
 - Three strictness levels (`conservative`, `balanced`, `aggressive`). A transform is applied
   only when the result reads more like English; clean text is left alone.
 - Layers are followed four deep. Inputs over 100,000 characters are returned unchanged, and one
-  call scans at most 4,000,000 characters in total.
+  call scans at most 1,000,000 characters in total.
 
 ### Known limits
 
 - English only. Other languages and scripts pass through unchanged.
 - Capitals hidden behind a leetspeak digit, and alternating case, are not restored.
 - Shifted or reversed words inside otherwise plain text recover poorly.
-- The worst case in time is 100,000 random printable characters, about 14 seconds.
+- The worst case in time is 100,000 random printable characters, about ten seconds at `aggressive` and six at `balanced`.
 - Most evaluation samples come from our own generators; see the README for what was measured on
   text we did not write.
