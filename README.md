@@ -11,14 +11,20 @@ and where.
 'Click here to claim your prize'
 ```
 
-**Status: version 0.x, an alpha, not yet released on PyPI.** The library and the command work,
+**Status: version 0.1.0a1, an alpha.** The library and the command work,
 thirty-two transforms are implemented and measured, and the numbers below say how far to trust
 them: they are mostly from samples our own generators produced, so read "How well it works"
 before relying on it.
 
 ## Installing
 
-Not on PyPI yet, so install it from a clone:
+From PyPI. The version is an alpha, so pip needs `--pre`:
+
+```sh
+pip install --pre text-deobfuscate     # or: uv add --prerelease allow text-deobfuscate
+```
+
+Or from a clone, to work on it:
 
 ```sh
 git clone https://github.com/lapid/text-deobfuscate && cd text-deobfuscate

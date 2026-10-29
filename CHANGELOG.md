@@ -5,7 +5,7 @@ All notable changes to this project are recorded here. The format follows
 [Semantic Versioning](https://semver.org/), with the usual caveat that anything before 1.0 may
 change in a minor release.
 
-## [Unreleased]
+## [0.1.0a1] - 2026-10-29
 
 First public release, `0.1.0a1`: an alpha pre-release (`pip install` skips it unless asked with `--pre`). `0.1.0` follows
 once an independent set has been run and early feedback is in.
