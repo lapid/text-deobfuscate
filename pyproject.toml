@@ -21,8 +21,8 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Security",
-    "Typing :: Typed",
     "Topic :: Text Processing",
+    "Typing :: Typed",
 ]
 dependencies = []
 
@@ -39,3 +39,29 @@ text-deobfuscate = "text_deobfuscate.cli:main"
 [build-system]
 requires = ["uv_build>=0.9.7,<0.14"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "bandit>=1.9.4",
+    "mypy>=2.4.1",
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+# "a b c".split() is how the word lists are written throughout, on purpose.
+ignore = ["SIM905"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["src"]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]
+# B311: seeded random drives the evaluation corpus, never anything security-sensitive.
+# B105: the word "password" and the token "1" are data for a text library, not credentials.
+skips = ["B311", "B105"]

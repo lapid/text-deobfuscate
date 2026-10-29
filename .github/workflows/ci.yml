@@ -25,6 +25,22 @@ jobs:
         run: uv run python -m evaluation.gate
       - name: Build the package
         run: uv build
+      - name: Check the wheel
+        run: uv run python tools/check_wheel.py
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          python-version: "3.12"
+      - name: Ruff
+        run: uv run ruff check .
+      - name: Mypy
+        run: uv run mypy
+      - name: Bandit
+        run: uv run bandit -q -c pyproject.toml -r src tools evaluation
 
   # The package is pure Python and says "OS independent", so the tests run on the other systems
   # too. The regression gate scores for several minutes and is run on Linux only.
