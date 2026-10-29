@@ -5,7 +5,7 @@ Built by `evaluation/corpus.py` and `evaluation/build.py`; do not edit by hand. 
 
 **Do not read the `test` files to get ideas for rules.**
 
-**Content note:** the sets hold real messages, so some contain profanity, crude talk and
+**Content note:** the sets hold real messages, so some contain profanity, crude or hateful talk and
 scam text. They are kept on purpose, because phishing and injected instructions use such
 language and the tool must be tested on it (`CODE_OF_CONDUCT.md`). Private details are masked.
 

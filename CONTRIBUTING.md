@@ -57,8 +57,9 @@ commit and explain the reason in the pull request. Do not update the baseline to
 - Evaluation rows from third-party sources keep their own licence and credit (`data/eval/README.md`).
   The `data/eval` files are **not** under the MIT licence.
 - Do not commit samples with personal data (names with addresses, phone numbers, email addresses
-  of private people); mask them. Real profanity and crude language in phishing, spam or injection
-  text is fine as data, with its source and licence; do not write abusive text yourself, and see
+  of private people); mask them. Real profanity, crude or hateful language in phishing, spam or injection
+  text is fine as data, with its source and licence, kept to what the sample needs and only in the
+  data files; do not write abusive text yourself, and see
   `CODE_OF_CONDUCT.md`. Do not commit data whose licence you have not checked.
 - Do not copy another deobfuscation tool's code or data into the tool. Standard-library codecs
   and word-list or n-gram resources are fine.
